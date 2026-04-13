@@ -19,6 +19,7 @@ extension Controller {
       event.type = .otherMouseDown
 
       event.setIntegerValueField(.mouseEventButtonNumber, value: kCGMouseButtonCenter)
+      triggerHapticForMiddleClick()
     }
 
     if state.wasThreeDown && (type == .leftMouseUp || type == .rightMouseUp) {

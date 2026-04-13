@@ -129,6 +129,7 @@ import MultitouchSupport
 
     postMouseEvent(type: .otherMouseDown, button: buttonType, location: location)
     postMouseEvent(type: .otherMouseUp, button: buttonType, location: location)
+    triggerHapticForMiddleClick()
   }
 
   private func shouldPreventEmulation() -> Bool {

@@ -3,22 +3,17 @@
 # MiddleClick - Build and Run Script
 # Builds the project in Debug mode and runs it without opening Xcode
 
-set -e  # Exit on error
+set -euo pipefail  # Exit on error and fail pipelines when xcodebuild fails
 
 # Build only if BUILD_SKIP is not set (allows Makefile to skip redundant builds)
-if [ -z "$BUILD_SKIP" ]; then
+if [ -z "${BUILD_SKIP:-}" ]; then
   echo "🔨 Building MiddleClick (Debug)..."
   xcodebuild -project MiddleClick.xcodeproj \
     -scheme MiddleClick \
     -configuration Debug \
     build \
-    | grep -E "BUILD (SUCCEEDED|FAILED)|error:" || true
+    | grep -E "BUILD (SUCCEEDED|FAILED)|error:" || [ "${PIPESTATUS[0]}" -eq 0 ]
 
-  # Check if build succeeded
-  if [ ${PIPESTATUS[0]} -ne 0 ]; then
-    echo "❌ Build failed!"
-    exit 1
-  fi
   echo "✅ Build succeeded!"
 fi
 
@@ -31,17 +26,29 @@ sleep 0.5
 echo "🚀 Starting MiddleClick..."
 
 # Ask Xcode where it put the .app (canonical — no find, no mtime guessing)
-BUILT_PRODUCTS_DIR=$(xcodebuild -project MiddleClick.xcodeproj -scheme MiddleClick -configuration Debug -showBuildSettings 2>/dev/null | awk -F ' = ' '/ BUILT_PRODUCTS_DIR =/ {print $2}')
+if ! BUILT_PRODUCTS_DIR=$(
+  xcodebuild -project MiddleClick.xcodeproj -scheme MiddleClick -configuration Debug -showBuildSettings \
+    | awk -F ' = ' '/ BUILT_PRODUCTS_DIR =/ {print $2}'
+); then
+  echo "❌ Error: failed to read Xcode build settings"
+  exit 1
+fi
+
+if [ -z "$BUILT_PRODUCTS_DIR" ]; then
+  echo "❌ Error: could not determine BUILT_PRODUCTS_DIR from xcodebuild"
+  exit 1
+fi
+
 BUILD_PATH="$BUILT_PRODUCTS_DIR/MiddleClick.app"
 
 # If the .app is missing at the canonical path, something's off.
 if [ ! -d "$BUILD_PATH" ]; then
-  if [ -n "$BUILD_RETRIED" ]; then
+  if [ -n "${BUILD_RETRIED:-}" ]; then
     echo "❌ Error: .app still missing at $BUILD_PATH after rebuild"
     exit 1
   fi
 
-  if [ -n "$BUILD_SKIP" ]; then
+  if [ -n "${BUILD_SKIP:-}" ]; then
     # Called from `make run`: the Make stamp is stale (e.g. Xcode cleared
     # DerivedData since the last build). Invalidate it and let make's
     # dependency chain rebuild via clean-build + run.

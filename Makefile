@@ -12,7 +12,7 @@ BUILD_STAMP := ./build/.build-stamp
 # Only build if sources changed since last build
 $(BUILD_STAMP): $(SOURCES)
 	@echo "🔨 Building MiddleClick (Debug)..."
-	@xcodebuild -project MiddleClick.xcodeproj -scheme MiddleClick -configuration Debug build | grep -E "BUILD (SUCCEEDED|FAILED)|error:" || true
+	@bash -o pipefail -c 'xcodebuild -project MiddleClick.xcodeproj -scheme MiddleClick -configuration Debug build | grep -E "BUILD (SUCCEEDED|FAILED)|error:" || [ "$${PIPESTATUS[0]}" -eq 0 ]'
 	@echo "✅ Build succeeded!"
 	@mkdir -p $(dir $(BUILD_STAMP))
 	@touch $(BUILD_STAMP)

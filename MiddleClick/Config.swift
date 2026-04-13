@@ -19,4 +19,13 @@ final class Config: ConfigCore {
   @UserDefault var tapToClick = SystemPermissions.getIsSystemTapToClickEnabled
 
   @UserDefault var ignoredAppBundles = Set<String>()
+
+  @UserDefault("hapticActuationID")
+  var hapticActuationID = 4
+
+  @UserDefault("hapticUnknown2")
+  var hapticUnknown2: Float = 0.5
+
+  @UserDefault("hapticUnknown3")
+  var hapticUnknown3: Float = 0.05
 }

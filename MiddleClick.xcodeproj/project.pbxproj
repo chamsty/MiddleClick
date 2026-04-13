@@ -23,6 +23,17 @@
 		976CE16D2D73BAFC002D9FBB /* MiddleClick */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MiddleClick; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		97D8F2012EFC000100A00001 /* XCLocalSwiftPackageReference "MoreTouch" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MoreTouch;
+		};
+		97D8F2022EFC000100A00001 /* XCLocalSwiftPackageReference "ConfigCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ConfigCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -85,6 +96,10 @@
 				976CE16D2D73BAFC002D9FBB /* MiddleClick */,
 			);
 			name = MiddleClick;
+			packageProductDependencies = (
+				9701F9A02D8235BA00FED88A /* MoreTouchCore */,
+				976CE2022D73C762002D9FBB /* ConfigCore */,
+			);
 			productInstallPath = "$(HOME)/Applications";
 			productName = test;
 			productReference = 976CE1432D73BA00002D9FBB /* MiddleClick.app */;
@@ -97,7 +112,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					8D1107260486CEB800E47090 = {
 						LastSwiftMigration = 1620;
@@ -113,6 +128,10 @@
 				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* test */;
+			packageReferences = (
+				97D8F2012EFC000100A00001 /* XCLocalSwiftPackageReference "MoreTouch" */,
+				97D8F2022EFC000100A00001 /* XCLocalSwiftPackageReference "ConfigCore" */,
+			);
 			productRefGroup = 976CE1442D73BA00002D9FBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -172,16 +191,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = MiddleClick/MiddleClick.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = R2294BC6J8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -208,6 +224,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "MiddleClick/MiddleClick-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 			};
@@ -225,11 +242,11 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = R2294BC6J8;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -254,6 +271,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "MiddleClick/MiddleClick-Bridging-Header.h";
 				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
@@ -359,10 +377,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		9701F9A02D8235BA00FED88A /* MoreTouchCore */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 97D8F2012EFC000100A00001 /* XCLocalSwiftPackageReference "MoreTouch" */;
 			productName = MoreTouchCore;
 		};
 		976CE2022D73C762002D9FBB /* ConfigCore */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 97D8F2022EFC000100A00001 /* XCLocalSwiftPackageReference "ConfigCore" */;
 			productName = ConfigCore;
 		};
 /* End XCSwiftPackageProductDependency section */

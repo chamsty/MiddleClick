@@ -5,6 +5,9 @@ import AppKit
   private let config = Config.shared
   private var infoItem, tapToClickItem, accessibilityPermissionStatusItem, accessibilityPermissionActionItem, ignoredAppItem, launchAtLoginItem: NSMenuItem!
   private var fingerCountControl: FingerCountControl!
+  private var hapticActuationIDControl: AdjustableValueControl!
+  private var hapticUnknown2Control: AdjustableValueControl!
+  private var hapticUnknown3Control: AdjustableValueControl!
   private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
   var isStatusItemVisible: Bool {
     get { statusItem.isVisible }
@@ -80,6 +83,8 @@ import AppKit
     advancedItem.submenu = advancedMenu
 
     addFingerCountItem(advancedMenu)
+    advancedMenu.addSeparator()
+    addHapticTuningItems(advancedMenu)
 
     updateTapToClickStatus()
 
@@ -92,10 +97,10 @@ import AppKit
     )
     updateLaunchAtLoginItem()
 
-    _ = menu.addItem(withTitle: "Version \(BundleInfo.version)")
+    menu.addItem(withTitle: "Version \(BundleInfo.version)")
 
     #if DEBUG
-    _ = menu.addItem(
+    menu.addItem(
       withTitle: "Restart listeners",
       action: #selector(restartNow),
       target: self,
@@ -103,10 +108,10 @@ import AppKit
     )
     #endif
 
-    _ = menu.addItem(
+    menu.addItem(
       withTitle: "About \(getAppName())...", action: #selector(openWebsite), target: self)
 
-    _ = menu.addItem(
+    menu.addItem(
       withTitle: "Quit", action: #selector(actionQuit), target: self, keyEquivalent: "q")
 
     return menu
@@ -322,12 +327,68 @@ extension TrayMenu {
     config.$minimumFingers.delete()
     fingerCountControl.refresh()
   }
+
+  private func addHapticTuningItems(_ menu: NSMenu) {
+    hapticActuationIDControl = AdjustableValueControl(
+      title: "Actuation ID",
+      minValue: 1,
+      maxValue: 6,
+      step: 1,
+      formatter: { "\(Int($0))" },
+      getValue: { Double(self.config.hapticActuationID) },
+      setValue: { self.config.hapticActuationID = Int($0) }
+    )
+
+    hapticUnknown2Control = AdjustableValueControl(
+      title: "Hardness",
+      minValue: 0,
+      maxValue: 1,
+      step: 0.05,
+      formatter: { String(format: "%.2f", $0) },
+      getValue: { Double(self.config.hapticUnknown2) },
+      setValue: { self.config.hapticUnknown2 = Float($0) }
+    )
+
+    hapticUnknown3Control = AdjustableValueControl(
+      title: "Intensity",
+      minValue: 0,
+      maxValue: 1,
+      step: 0.05,
+      formatter: { String(format: "%.2f", $0) },
+      getValue: { Double(self.config.hapticUnknown3) },
+      setValue: { self.config.hapticUnknown3 = Float($0) }
+    )
+
+    [hapticActuationIDControl, hapticUnknown2Control, hapticUnknown3Control].forEach {
+      let menuItem = NSMenuItem()
+      menuItem.view = $0
+      menu.addItem(menuItem)
+    }
+
+    menu.addItem(
+      withTitle: "Reset Haptic Tuning",
+      action: #selector(resetHapticTuning),
+      target: self
+    )
+  }
+
+  @objc private func resetHapticTuning() {
+    config.$hapticActuationID.delete()
+    config.$hapticUnknown2.delete()
+    config.$hapticUnknown3.delete()
+    hapticActuationIDControl.refresh()
+    hapticUnknown2Control.refresh()
+    hapticUnknown3Control.refresh()
+  }
 }
 
 extension TrayMenu: NSMenuDelegate {
   func menuWillOpen(_ menu: NSMenu) {
     updateIgnoredAppItem()
     fingerCountControl.refresh()
+    hapticActuationIDControl?.refresh()
+    hapticUnknown2Control?.refresh()
+    hapticUnknown3Control?.refresh()
   }
 
   private func updateIgnoredAppItem() {
@@ -346,12 +407,14 @@ extension TrayMenu: NSMenuDelegate {
 }
 
 extension NSMenu {
+  @discardableResult
   func addItem(withTitle string: String, action selector: Selector, target: AnyObject, keyEquivalent charCode: String = "") -> NSMenuItem {
     let menuItem = NSMenuItem(title: string, action: selector, keyEquivalent: charCode)
     menuItem.target = target
     self.addItem(menuItem)
     return menuItem
   }
+  @discardableResult
   func addItem(withTitle string: String) -> NSMenuItem {
     return self.addItem(withTitle: string, action: nil, keyEquivalent: "")
   }
