@@ -108,7 +108,7 @@ This MiddleClick fork supports haptic feedback for Force Touch trackpads. When a
 
 You can fine-tune the haptic feedback through the **Advanced** submenu in the tray menu:
 
-- **Actuation ID**: The type of haptic pulse (1 to 16).
+- **Actuation ID**: The type of haptic pulse (1 to 6).
 - **Hardness**: The sharpness of the tactile response.
 - **Intensity**: The strength of the vibration.
 
