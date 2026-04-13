@@ -7,7 +7,7 @@
     MiddleClick <img align="center" height="80" src="MiddleClick/Images.xcassets/AppIcon.appiconset/icon_128p.png">
   </h1>
   <p>
-    <b>Emulate a scroll wheel click with three finger Click or Tap on MacBook trackpad and Magic Mouse</b>
+    <b>Emulate a scroll wheel click with three finger Click or Tap on MacBook trackpad and Magic Mouse, with haptic feedback support</b>
   </p>
   <p>
     with <b>macOS</b> Sequoia<a href="https://www.apple.com/macos/macos-sequoia/"><sup>15</sup></a> support!
@@ -43,23 +43,6 @@ It's more than just `⌘`+click
 
 </p>
 
-<br>
-
-## Install
-
-### Via :beer: [Homebrew](https://brew.sh) (Recommended)
-
-```ps1
-brew install --cask middleclick
-```
-
-> Check out [the cask](https://github.com/Homebrew/homebrew-cask/blob/master/Casks/m/middleclick.rb) if you're interested
-
-### <a href="https://github.com/artginzburg/MiddleClick/releases/latest/download/MiddleClick.zip">Direct Download · <img align="center" alt="GitHub release" src="https://img.shields.io/github/release/artginzburg/MiddleClick?label=%20&color=gray"></a>
-
-If you've used v1 or v2 — glance over [How to migrate](./docs/MIGRATIONS.md).
-
-<br>
 
 ## Preferences
 
@@ -116,6 +99,18 @@ defaults write art.ginzburg.MiddleClick maxTimeDelta 150
 ```
 
 > Default is 300
+
+## Haptic Feedback
+
+This MiddleClick fork supports haptic feedback for Force Touch trackpads. When a middle click is performed, the trackpad will provide a tactile response.
+
+### Tuning
+
+You can fine-tune the haptic feedback through the **Advanced** submenu in the tray menu:
+
+- **Actuation ID**: The type of haptic pulse (1 to 16).
+- **Hardness**: The sharpness of the tactile response.
+- **Intensity**: The strength of the vibration.
 
 ## Troubleshooting
 
